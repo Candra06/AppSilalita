@@ -7,29 +7,37 @@ package silalita;
 
 import Config.Config;
 import java.awt.Color;
+import java.awt.Image;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author admin
  */
 public class Dashboard extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Dashboard
      */
     public Dashboard() {
         initComponents();
+       JFrame frame = new JFrame();
         try {
             Config.configDB();
         } catch (Exception ex) {
+            System.out.println(ex);
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
         }
+        frame.setIconImage(new ImageIcon("C:/Program Files/Silalita/logo.ico").getImage());
         setResizable(false);
         btnHistory.setBackground(new Color(0,0,0,0));
         btnInput.setBackground(new Color(0,0,0,0));
+        btnHide.setBackground(new Color(0,0,0,0));
     }
 
     /**
@@ -43,6 +51,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         btnInput = new javax.swing.JPanel();
         btnHistory = new javax.swing.JPanel();
+        btnHide = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,6 +96,25 @@ public class Dashboard extends javax.swing.JFrame {
 
         getContentPane().add(btnHistory, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 220, 50));
 
+        btnHide.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHideMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnHideLayout = new javax.swing.GroupLayout(btnHide);
+        btnHide.setLayout(btnHideLayout);
+        btnHideLayout.setHorizontalGroup(
+            btnHideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        btnHideLayout.setVerticalGroup(
+            btnHideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(btnHide, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, 40));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/HomePage.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -107,6 +135,53 @@ public class Dashboard extends javax.swing.JFrame {
         ht.setVisible(true);
     }//GEN-LAST:event_btnHistoryMouseClicked
 
+    private void btnHideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHideMouseClicked
+        inputDataTamping();
+    }//GEN-LAST:event_btnHideMouseClicked
+
+    void inputDataTamping(){
+        try {
+            String sql = "INSERT INTO tamping(nama_tamping, status) VALUES " +
+            "('TAMPING/PEKERJA P2U','Show')," +
+            "('TAMPING TU','Show')," +
+            "('TAMPING KAMTIB','Show')," +
+            "('TAMPING KPLP','Show')," +
+            "('TAMPING REGISTRASI','Show')," +
+            "('TAMPING POLIKLINIK','Show')," +
+            "('TAMPING MUSHOLA','Show')," +
+            "('TAMPING BIMPAS','Show')," +
+            "('TAMPING KRT BIMPAS','Show')," +
+            "('TAMPING SALON','Show')," +
+            "('TAMPING POS','Show')," +
+            "('TAMPING PERPUSTAKAAN','Show')," +
+            "('TAMPING GEREJA','Show')," +
+            "('TAMPING OLAHRGA','Show')," +
+            "('TAMPING WARTEL','Show')," +
+            "('TAMPING BENGKER','Show')," +
+            "('PEKERJA LAUNDRY','Show')," +
+            "('PEKERJA KERIPIK','Show')," +
+            "('PEKERJA BAKERY','Show')," +
+            "('PEKERJA DAPUR BENGER','Show')," +
+            "('TAMPING KOPERASI','Show')," +
+            "('TAMPING DAPUR','Show')," +
+            "('TAMPING PENDIDIKAN','Show')," +
+            "('TAMPING BLOK','Show')," +
+            "('CREATIVE','Show')";
+            
+            java.sql.Connection conn = (Connection)Config.configDB();
+            java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+            try {
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Di Simpan");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Data Gagal Di Simpan "+e);
+                System.out.println(e);
+            }
+            pst.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data Gagal Di Simpan "+e);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -138,12 +213,14 @@ public class Dashboard extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 
+                 
                 new Dashboard().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel btnHide;
     private javax.swing.JPanel btnHistory;
     private javax.swing.JPanel btnInput;
     private javax.swing.JLabel jLabel1;

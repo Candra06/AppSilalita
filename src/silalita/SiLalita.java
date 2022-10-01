@@ -6,6 +6,8 @@
 package silalita;
 
 import java.awt.EventQueue;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -21,9 +23,11 @@ public class SiLalita {
         // TODO code application logic here
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                SplashScreen frame = new SplashScreen();
+                SplashScreen frame = new SplashScreen();
+//                 InputTamping frame = new InputTamping();
 //                 InputData frame = new InputData();
-                 Dashboard frame = new Dashboard();
+//                 Dashboard frame = new Dashboard();
+                   
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setLocationRelativeTo(null);
