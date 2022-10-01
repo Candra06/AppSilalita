@@ -41,6 +41,9 @@ public class InputTamping extends javax.swing.JFrame {
         btnDeleteTamping.setBackground(new Color(0,0,0,0));
         btnSavePetugas.setBackground(new Color(0,0,0,0));
         btnDeletePetugas.setBackground(new Color(0,0,0,0));
+        btnClose.setBackground(new Color(0,0,0,0));
+        
+
         showData();
         showDataPetugas();
         tampilCmbTamping();
@@ -336,9 +339,11 @@ public class InputTamping extends javax.swing.JFrame {
         btnDeletePetugas = new javax.swing.JPanel();
         btnSavePetugas = new javax.swing.JPanel();
         btnSaveTamping = new javax.swing.JPanel();
+        btnClose = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -386,7 +391,6 @@ public class InputTamping extends javax.swing.JFrame {
             }
         ));
         tblPetugas.setShowGrid(true);
-        tblPetugas.setSize(new java.awt.Dimension(1, 1));
         tblPetugas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblPetugasMouseClicked(evt);
@@ -401,7 +405,7 @@ public class InputTamping extends javax.swing.JFrame {
                 btnDeleteTampingMouseClicked(evt);
             }
         });
-        getContentPane().add(btnDeleteTamping, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 220, 140, 20));
+        getContentPane().add(btnDeleteTamping, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 220, 160, 30));
 
         btnDeletePetugas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -413,14 +417,14 @@ public class InputTamping extends javax.swing.JFrame {
         btnDeletePetugas.setLayout(btnDeletePetugasLayout);
         btnDeletePetugasLayout.setHorizontalGroup(
             btnDeletePetugasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
+            .addGap(0, 170, Short.MAX_VALUE)
         );
         btnDeletePetugasLayout.setVerticalGroup(
             btnDeletePetugasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
+            .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnDeletePetugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 220, 140, 20));
+        getContentPane().add(btnDeletePetugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 220, 170, 30));
 
         btnSavePetugas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -432,14 +436,14 @@ public class InputTamping extends javax.swing.JFrame {
         btnSavePetugas.setLayout(btnSavePetugasLayout);
         btnSavePetugasLayout.setHorizontalGroup(
             btnSavePetugasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
+            .addGap(0, 150, Short.MAX_VALUE)
         );
         btnSavePetugasLayout.setVerticalGroup(
             btnSavePetugasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
+            .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnSavePetugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 220, 140, 20));
+        getContentPane().add(btnSavePetugas, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 220, 150, 30));
 
         btnSaveTamping.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -451,14 +455,33 @@ public class InputTamping extends javax.swing.JFrame {
         btnSaveTamping.setLayout(btnSaveTampingLayout);
         btnSaveTampingLayout.setHorizontalGroup(
             btnSaveTampingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
+            .addGap(0, 160, Short.MAX_VALUE)
         );
         btnSaveTampingLayout.setVerticalGroup(
             btnSaveTampingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
+            .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnSaveTamping, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 140, 20));
+        getContentPane().add(btnSaveTamping, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 160, 30));
+
+        btnClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCloseMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnCloseLayout = new javax.swing.GroupLayout(btnClose);
+        btnClose.setLayout(btnCloseLayout);
+        btnCloseLayout.setHorizontalGroup(
+            btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+        btnCloseLayout.setVerticalGroup(
+            btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 20, 40, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/DataTamping.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 835, 632));
@@ -536,6 +559,10 @@ public class InputTamping extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteTampingMouseClicked
 
+    private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_btnCloseMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -572,6 +599,7 @@ public class InputTamping extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel btnClose;
     private javax.swing.JPanel btnDeletePetugas;
     private javax.swing.JPanel btnDeleteTamping;
     private javax.swing.JPanel btnSavePetugas;

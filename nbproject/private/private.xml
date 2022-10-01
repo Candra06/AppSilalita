@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Asus/Documents/Abiyu/SiLalita/src/silalita/InputTamping.java</file>
-            <file>file:/C:/Users/Asus/Documents/Abiyu/SiLalita/src/Config/Config.java</file>
-            <file>file:/C:/Users/Asus/Documents/Abiyu/SiLalita/src/silalita/InputData.java</file>
-            <file>file:/C:/Users/Asus/Documents/Abiyu/SiLalita/src/silalita/SiLalita.java</file>
+            <file>file:/Users/admin/NetBeansProjects/AppSilalita/src/Config/Config.java</file>
+            <file>file:/Users/admin/NetBeansProjects/AppSilalita/src/silalita/HistoryTamping.java</file>
+            <file>file:/Users/admin/NetBeansProjects/AppSilalita/src/Config/Utils.java</file>
+            <file>file:/Users/admin/NetBeansProjects/AppSilalita/src/silalita/Dashboard.java</file>
+            <file>file:/Users/admin/NetBeansProjects/AppSilalita/src/silalita/SiLalita.java</file>
+            <file>file:/Users/admin/NetBeansProjects/AppSilalita/src/silalita/InputData.java</file>
+            <file>file:/Users/admin/NetBeansProjects/AppSilalita/src/silalita/InputTamping.java</file>
         </group>
     </open-files>
 </project-private>

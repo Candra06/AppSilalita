@@ -18,32 +18,19 @@ public class Config {
     private static Connection mysqlconfig;
     private static Connection koneksi;
     public static Connection configDB() { 
-       //untuk koneksidd ke database
+       //untuk koneksi ke database
        try{
            Class.forName("org.sqlite.JDBC");
            String url="jdbc:sqlite:silalita.db";
            koneksi=DriverManager.getConnection(url);
            return koneksi;
        }catch(SQLException se){
-           System.out.println("Gagal koneksi "+se);
-           
+           System.out.println("Gagal koneksi data"+se);
            JOptionPane.showMessageDialog(null,"Gagal Koneksi Database","Peringatan",JOptionPane.WARNING_MESSAGE);
        } catch (ClassNotFoundException ex) {
            System.out.println("Gagal koneksi "+ex);
-            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null,"Gagal Koneksi Database","Peringatan",JOptionPane.WARNING_MESSAGE);
         }
-       
-//        try {
-//            String url="jdbc:mysql://localhost:3306/silalita?zeroDateTimeBehavior=CONVERT_TO_NULL"; //url database
-//            String user="root"; //user database
-//            String pass="bismillah5758-"; //password database
-//            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-//            mysqlconfig=DriverManager.getConnection(url, user, pass); 
-//            
-//        } catch (Exception e) {
-//            System.err.println("koneksi gagal "+e.getMessage());
-//        }
-//        return mysqlconfig;
         return koneksi;
     }
 }

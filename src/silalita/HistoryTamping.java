@@ -53,17 +53,22 @@ public class HistoryTamping extends javax.swing.JFrame {
         
         try {
             String sql = "SELECT tamping.nama_tamping, petugas.petugas, history.* FROM `history` JOIN tamping ON history.id_tamping=tamping.id JOIN petugas ON history.id_petugas = petugas.id";
-            java.sql.Connection conn=(Connection)Config.configDB();
+           java.sql.Connection conn=(Connection)Config.configDB();
             java.sql.Statement stm=conn.createStatement();
             java.sql.ResultSet res=stm.executeQuery(sql);
-            System.err.println(res);
-            while(res.next()){
+            
+            try {
+                 while(res.next()){
+//                     System.out.println(Utils.setwaktu(res.getString(10))+" "+res.getString(1)+""+res.getString(2)+" "+res.getString(6));
                 model.addRow(new Object[]{Utils.setwaktu(res.getString(10)),res.getString(1),res.getString(2),res.getString(6),res.getString(7),res.getString(8),res.getString(9)});
+            }
+            } catch (Exception e) {
+                System.out.println(e);
             }
             tableHistory.setModel(model);
             tableHistory.setBorder(border);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("data "+e);
     }}
     
     void showDataFilter() {

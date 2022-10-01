@@ -22,7 +22,8 @@ public class SiLalita {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
 //                SplashScreen frame = new SplashScreen();
-                                InputData frame = new InputData();
+//                 InputData frame = new InputData();
+                 Dashboard frame = new Dashboard();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setLocationRelativeTo(null);

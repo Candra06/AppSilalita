@@ -11,6 +11,7 @@ import java.sql.Connection;
 import Config.Config;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *

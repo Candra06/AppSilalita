@@ -10,8 +10,11 @@ import java.awt.Color;
 import java.awt.Container;
 import java.sql.Connection;
 import static java.lang.Thread.sleep;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import java.util.*;
+import javax.swing.JFrame;
 
 /**
  *
@@ -44,27 +47,6 @@ public class InputData extends javax.swing.JFrame {
         
         cmbTamping.setBounds(100,100,100,30);
         
-    }
-    
-    public void tampilTMP() {
-        try {
-            String sql = "SELECT * FROM history";
-            java.sql.Connection conn = (Connection)Config.configDB();
-            java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-            java.sql.ResultSet rs = pst.executeQuery();
-            int index = 1;
-            idTamping.add(0);
-            while(rs.next()){
-                cmbTamping.addItem(rs.getString("nama_tamping"));
-                idTamping.add(rs.getInt("id"));
-                index++;
-            }
-            rs.last();
-            int total = rs.getRow();
-            rs.first();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
     }
     
     public void tampilCmbTamping() {
@@ -196,7 +178,7 @@ public class InputData extends javax.swing.JFrame {
             .addGap(0, 50, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 620, 270, 50));
+        getContentPane().add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 590, 270, 50));
 
         btnStartGo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -215,7 +197,7 @@ public class InputData extends javax.swing.JFrame {
             .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnStartGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 350, 140, 30));
+        getContentPane().add(btnStartGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 140, 30));
 
         btnStopGo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -234,7 +216,7 @@ public class InputData extends javax.swing.JFrame {
             .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnStopGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 140, 30));
+        getContentPane().add(btnStopGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 330, 140, 30));
 
         btnStartBack.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -246,14 +228,14 @@ public class InputData extends javax.swing.JFrame {
         btnStartBack.setLayout(btnStartBackLayout);
         btnStartBackLayout.setHorizontalGroup(
             btnStartBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 130, Short.MAX_VALUE)
+            .addGap(0, 150, Short.MAX_VALUE)
         );
         btnStartBackLayout.setVerticalGroup(
             btnStartBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
+            .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnStartBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 350, 130, 30));
+        getContentPane().add(btnStartBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 330, 150, 40));
 
         btnStopBack.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -265,14 +247,14 @@ public class InputData extends javax.swing.JFrame {
         btnStopBack.setLayout(btnStopBackLayout);
         btnStopBackLayout.setHorizontalGroup(
             btnStopBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
+            .addGap(0, 150, Short.MAX_VALUE)
         );
         btnStopBackLayout.setVerticalGroup(
             btnStopBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnStopBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 350, 140, 30));
+        getContentPane().add(btnStopBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 330, 150, 30));
 
         txtTimerGo.setFont(new java.awt.Font("Arial Hebrew", 1, 48)); // NOI18N
         txtTimerGo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -335,7 +317,7 @@ public class InputData extends javax.swing.JFrame {
         getContentPane().add(btnDataTamping, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 50, 140, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/InputTamping.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 720));
 
         pack();
         setLocationRelativeTo(null);
@@ -355,7 +337,10 @@ public class InputData extends javax.swing.JFrame {
 
     private void btnStartGoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStartGoMouseClicked
         startGo = true;
- 
+        PreviewTimer pt = new PreviewTimer();
+//        pt.setVisible(true);
+        pt.t.setText("500000");
+        
         Thread t = new Thread() {
             public void run(){
                 for(;;) {
@@ -396,7 +381,8 @@ public class InputData extends javax.swing.JFrame {
 
     private void btnStartBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStartBackMouseClicked
         startBack = true;
-          System.out.println(cmbTamping.getSelectedItem());
+        
+        
         Thread t = new Thread() {
             public void run(){
                 for(;;) {
@@ -470,13 +456,29 @@ tampilCmbPetugas(idTamping.get(cmbTamping.getSelectedIndex()));
             } else if(startGo==true || startBack==true){
                 JOptionPane.showMessageDialog(null, "Waktu masih berjalan", "Peringatan", JOptionPane.WARNING_MESSAGE);
             } else {
-                 String sql = "INSERT INTO history(id_tamping, id_petugas,keperluan, jumlah, waktu_berangkat, waktu_kembali) VALUES('"+idTamping.get(cmbTamping.getSelectedIndex())+"','"+idPetugas.get(cmbNama.getSelectedIndex())+"','"+txtJumlahTamping.getText()+"','"+txtKeperluan.getText()+"','"+valueGo+"','"+valueBack+"')";
+                 String sql = "INSERT INTO history(id_tamping, id_petugas,keperluan, jumlah, waktu_berangkat, waktu_kembali, created_at) VALUES(?,?,?,?,?,?,?)";
                  
                 java.sql.Connection conn = (Connection)Config.configDB();
                 java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-                pst.execute();
-                resetForm();
-                JOptionPane.showMessageDialog(null, "Data Berhasil Di Simpan");
+                
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                 try {
+                    pst.setString(1, idTamping.get(cmbTamping.getSelectedIndex()).toString());
+                    pst.setString(2, idPetugas.get(cmbNama.getSelectedIndex()).toString());
+                    pst.setString(3, txtJumlahTamping.getText());
+                    pst.setString(4, txtKeperluan.getText());
+                    pst.setString(5, valueGo);
+                    pst.setString(6, valueBack);
+                    pst.setString(7, dtf.format(now).toString());
+                    pst.executeUpdate();
+                    resetForm();
+                    JOptionPane.showMessageDialog(null, "Data Berhasil Di Simpan");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Data Gagal Di Dimpan "+e);
+                System.out.println(e);
+            }
+            pst.close();
                 
             }
            
