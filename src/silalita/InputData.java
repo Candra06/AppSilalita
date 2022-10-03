@@ -55,16 +55,14 @@ public class InputData extends javax.swing.JFrame {
             java.sql.Connection conn = (Connection)Config.configDB();
             java.sql.PreparedStatement pst=conn.prepareStatement(sql);
             java.sql.ResultSet rs = pst.executeQuery();
-            int index = 1;
+            
             idTamping.add(0);
             while(rs.next()){
                 cmbTamping.addItem(rs.getString("nama_tamping"));
                 idTamping.add(rs.getInt("id"));
-                index++;
+                
             }
-            rs.last();
-            int total = rs.getRow();
-            rs.first();
+            pst.close();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -85,9 +83,8 @@ public class InputData extends javax.swing.JFrame {
                 idPetugas.add(rs.getInt("id"));
                 index++;
             }
-            rs.last();
-            int total = rs.getRow();
-            rs.first();
+            rs.close();
+            pst.close();
         } catch (Exception e) {
             System.out.println(e);
         }

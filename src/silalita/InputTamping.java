@@ -73,9 +73,7 @@ public class InputTamping extends javax.swing.JFrame {
                 idTamping.add(rs.getInt("id"));
                 index++;
             }
-            rs.last();
-            int total = rs.getRow();
-            rs.first();
+            rs.close();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -100,7 +98,7 @@ public class InputTamping extends javax.swing.JFrame {
             while(res.next()){
                 model.addRow(new Object[]{res.getString(1),res.getString(2)});
             }
-            
+            res.close();
             tblTamping.setModel(model);
             tblTamping.setBorder(border);
         } catch (Exception e) {
@@ -131,12 +129,15 @@ public class InputTamping extends javax.swing.JFrame {
             java.sql.Connection conn=(Connection)Config.configDB();
             java.sql.Statement stm=conn.createStatement();
             java.sql.ResultSet res=stm.executeQuery(sql);
-            System.err.println(res);
+            
             while(res.next()){
                 model1.addRow(new Object[]{res.getString(1),res.getString(5),res.getString(3)});
             }
             tblPetugas.setModel(model1);
             tblPetugas.setBorder(border);
+            res.close();
+            stm.close();
+            
         } catch (Exception e) {
             System.out.println(e);
     }
@@ -150,7 +151,6 @@ public class InputTamping extends javax.swing.JFrame {
     
     void inputDataTamping(){
         try {
-            Statement stmt = null;
             String sql = "INSERT INTO tamping(nama_tamping,status) VALUES(?,'Show')";
             
             java.sql.Connection conn = (Connection)Config.configDB();
@@ -165,7 +165,6 @@ public class InputTamping extends javax.swing.JFrame {
                 System.out.println(e);
             }
             pst.close();
-                
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Data Gagal Di Simpan "+e);
         }

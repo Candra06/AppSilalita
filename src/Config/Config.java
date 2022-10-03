@@ -21,15 +21,15 @@ public class Config {
        //untuk koneksi ke database
        try{
            Class.forName("org.sqlite.JDBC");
-           String url="jdbc:sqlite:silalita.db";
+           String url="jdbc:sqlite:C:/Program Files/Silalita/silalita.db";
            koneksi=DriverManager.getConnection(url);
-           return koneksi;
        }catch(SQLException se){
            System.out.println("Gagal koneksi data"+se);
            JOptionPane.showMessageDialog(null,"Gagal Koneksi Database","Peringatan",JOptionPane.WARNING_MESSAGE);
        } catch (ClassNotFoundException ex) {
            System.out.println("Gagal koneksi "+ex);
            JOptionPane.showMessageDialog(null,"Gagal Koneksi Database","Peringatan",JOptionPane.WARNING_MESSAGE);
+           System.exit(0);
         }
         return koneksi;
     }
