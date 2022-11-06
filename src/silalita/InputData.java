@@ -15,6 +15,9 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import java.util.*;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,9 +25,11 @@ import javax.swing.JFrame;
  */
 public class InputData extends javax.swing.JFrame {
     static int detik = 0,menit = 0,jam = 0, mili=0;
-    static int detikBck = 0,menitBck = 0,jamBck = 0, miliBck=0;
+    static int detikBck = 0,menitBck = 0,jamBck = 0, miliBck=0, idTmp = -1;
     static String valueGo, valueBack;
     static boolean startGo = false, startBack = false;
+    static Object[] data;
+    
     
     List<Integer> idTamping = new ArrayList<Integer>();
     List<Integer> idPetugas = new ArrayList<Integer>();
@@ -37,16 +42,63 @@ public class InputData extends javax.swing.JFrame {
         initComponents();
         setResizable(false);
         tampilCmbTamping();
+        tableTmpData();
         btnHistory.setBackground(new Color(0,0,0,0));
         btnHome.setBackground(new Color(0,0,0,0));
         btnSave.setBackground(new Color(0,0,0,0));
-        btnStartGo.setBackground(new Color(0,0,0,0));
-        btnStopGo.setBackground(new Color(0,0,0,0));
-        btnStartBack.setBackground(new Color(0,0,0,0));
-        btnStopBack.setBackground(new Color(0,0,0,0));
-        
         cmbTamping.setBounds(100,100,100,30);
         
+    }
+    
+    public void tableTmpData(){
+         try {
+            
+            DefaultTableModel model = new DefaultTableModel();
+            Color color = UIManager.getColor("Table.gridColor");
+
+            MatteBorder border = new MatteBorder(1, 1, 0, 0, color);
+
+            model.addColumn("id");
+            model.addColumn("idT");
+            model.addColumn("idP");
+            model.addColumn("jml");
+            model.addColumn("status");
+            model.addColumn("Nama Tamping");
+            model.addColumn("Nama Pembantu");
+            model.addColumn("Keperluan");
+            model.addColumn("Jam Berangkat");
+            model.addColumn("Jam Tiba");
+            model.addColumn("Jam Kembali");
+            model.addColumn("Jam Tiba");
+            
+            
+            
+//            tblTmpData.getColumnModel().getColumn(0).setResizable(true);
+            
+            
+            tblTmpData.setShowHorizontalLines(true);
+            tblTmpData.setShowVerticalLines(true);
+            tblTmpData.setRowMargin(1);
+            tblTmpData.setModel(model);
+            tblTmpData.setBorder(border);
+            tblTmpData.getColumnModel().getColumn(0).setMinWidth(0);
+            tblTmpData.getColumnModel().getColumn(0).setMaxWidth(0);
+            tblTmpData.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tblTmpData.getColumnModel().getColumn(1).setMinWidth(0);
+            tblTmpData.getColumnModel().getColumn(1).setMaxWidth(0);
+            tblTmpData.getColumnModel().getColumn(1).setWidth(0);
+            tblTmpData.getColumnModel().getColumn(2).setMinWidth(0);
+            tblTmpData.getColumnModel().getColumn(2).setMaxWidth(0);
+            tblTmpData.getColumnModel().getColumn(2).setWidth(0);
+            tblTmpData.getColumnModel().getColumn(3).setMinWidth(0);
+            tblTmpData.getColumnModel().getColumn(3).setMaxWidth(0);
+            tblTmpData.getColumnModel().getColumn(3).setWidth(0);
+            tblTmpData.getColumnModel().getColumn(4).setMinWidth(0);
+            tblTmpData.getColumnModel().getColumn(4).setMaxWidth(0);
+            tblTmpData.getColumnModel().getColumn(4).setWidth(0);
+         } catch (Exception e) {
+             System.out.print(e);
+         }
     }
     
     public void tampilCmbTamping() {
@@ -89,30 +141,112 @@ public class InputData extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
+    
+    void addNewRow(){
+        try {
+            DefaultTableModel model = (DefaultTableModel)tblTmpData.getModel();
+            
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+            LocalDateTime now = LocalDateTime.now();
+
+            int id = tblTmpData.getRowCount() +1;
+            String tampingId = idTamping.get(cmbTamping.getSelectedIndex()).toString();
+            String petugasId = idPetugas.get(cmbNama.getSelectedIndex()).toString();
+            String namaTamping =  cmbTamping.getItemAt(cmbTamping.getSelectedIndex());
+            String namaPetugas = cmbNama.getItemAt(cmbNama.getSelectedIndex());
+            String jmlTamping = txtJumlahTamping.getText();
+            String keperluan = txtKeperluan.getText();
+            String status = "go"; // "stop", "back", "stopBack"
+            String jamBerangkat = dtf.format(now).toString();
+            String jamTiba1 = "";
+            String jamKembali = "";
+            String jamTiba2 = "";
+
+            model.addRow(new Object[]{ 
+                id, 
+                tampingId, 
+                petugasId,
+                txtJumlahTamping.getText(),
+                status,
+                namaTamping, 
+                namaPetugas,
+                txtKeperluan.getText(),
+                dtf.format(now).toString(),
+                jamTiba1,
+                jamKembali, 
+                jamTiba2
+            });       
+
+            resetForm();
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
+    
+    void updateTable(int row){
+        try {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+            LocalDateTime now = LocalDateTime.now();
+            String jam = dtf.format(now).toString();
+            
+            if (tblTmpData.getModel().getValueAt(row, 4).toString() == "go") {
+                tblTmpData.getModel().setValueAt("stop", row, 4);
+                tblTmpData.getModel().setValueAt(jam, row, 9); // set jam tiba
+                data [4] = "stop";
+                data [9] = jam;
+            } else if (tblTmpData.getModel().getValueAt(row, 4).toString() == "stop") {
+                tblTmpData.getModel().setValueAt("back", row, 4);
+                tblTmpData.getModel().setValueAt(jam, row, 10); // set jam kembali
+                data [4] = "back";
+                data [10] = jam;
+            } else if (tblTmpData.getModel().getValueAt(row, 4).toString() == "back"){
+                tblTmpData.getModel().setValueAt("stopBack", row, 4);
+                tblTmpData.getModel().setValueAt(jam, row, 11); // set jam selesai
+                data [4] = "stopBack";
+                data [11] = jam;
+            }else{
+                
+            }
+            resetForm();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+ 
+    }
+    
+    void saveData(){
+        if (idTmp == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih data yang akan disimpan");
+        } else {
+            // aksi simpan
+            DefaultTableModel model = (DefaultTableModel)tblTmpData.getModel();
+            model.removeRow(idTmp);
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    @SuppressWarnings("unchecked")
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         btnHome = new javax.swing.JPanel();
         btnHistory = new javax.swing.JPanel();
         btnSave = new javax.swing.JPanel();
-        btnStartGo = new javax.swing.JPanel();
-        btnStopGo = new javax.swing.JPanel();
-        btnStartBack = new javax.swing.JPanel();
-        btnStopBack = new javax.swing.JPanel();
-        txtTimerGo = new javax.swing.JLabel();
-        txtTimerBack = new javax.swing.JLabel();
         cmbTamping = new javax.swing.JComboBox<>();
         txtJumlahTamping = new javax.swing.JTextField();
         txtKeperluan = new javax.swing.JTextField();
         cmbNama = new javax.swing.JComboBox<>();
+        btnMulai = new javax.swing.JButton();
         btnDataTamping = new javax.swing.JButton();
+        btnStop = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblTmpData = new javax.swing.JTable();
+        btnSaveData = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -168,100 +302,14 @@ public class InputData extends javax.swing.JFrame {
         btnSave.setLayout(btnSaveLayout);
         btnSaveLayout.setHorizontalGroup(
             btnSaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 270, Short.MAX_VALUE)
+            .addGap(0, 230, Short.MAX_VALUE)
         );
         btnSaveLayout.setVerticalGroup(
             btnSaveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 590, 270, 50));
-
-        btnStartGo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnStartGoMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout btnStartGoLayout = new javax.swing.GroupLayout(btnStartGo);
-        btnStartGo.setLayout(btnStartGoLayout);
-        btnStartGoLayout.setHorizontalGroup(
-            btnStartGoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
-        );
-        btnStartGoLayout.setVerticalGroup(
-            btnStartGoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        getContentPane().add(btnStartGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 140, 30));
-
-        btnStopGo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnStopGoMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout btnStopGoLayout = new javax.swing.GroupLayout(btnStopGo);
-        btnStopGo.setLayout(btnStopGoLayout);
-        btnStopGoLayout.setHorizontalGroup(
-            btnStopGoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
-        );
-        btnStopGoLayout.setVerticalGroup(
-            btnStopGoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(btnStopGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 330, 140, 30));
-
-        btnStartBack.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnStartBackMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout btnStartBackLayout = new javax.swing.GroupLayout(btnStartBack);
-        btnStartBack.setLayout(btnStartBackLayout);
-        btnStartBackLayout.setHorizontalGroup(
-            btnStartBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
-        );
-        btnStartBackLayout.setVerticalGroup(
-            btnStartBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(btnStartBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 330, 150, 40));
-
-        btnStopBack.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnStopBackMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout btnStopBackLayout = new javax.swing.GroupLayout(btnStopBack);
-        btnStopBack.setLayout(btnStopBackLayout);
-        btnStopBackLayout.setHorizontalGroup(
-            btnStopBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
-        );
-        btnStopBackLayout.setVerticalGroup(
-            btnStopBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(btnStopBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 330, 150, 30));
-
-        txtTimerGo.setFont(new java.awt.Font("Arial Hebrew", 1, 48)); // NOI18N
-        txtTimerGo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtTimerGo.setText("00:00:00");
-        getContentPane().add(txtTimerGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 440, 200, 40));
-
-        txtTimerBack.setFont(new java.awt.Font("Arial Hebrew", 1, 48)); // NOI18N
-        txtTimerBack.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtTimerBack.setText("00:00:00");
-        getContentPane().add(txtTimerBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 410, 310, 80));
+        getContentPane().add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 260, 230, 30));
 
         cmbTamping.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         cmbTamping.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Pilih Tamping--" }));
@@ -282,7 +330,7 @@ public class InputData extends javax.swing.JFrame {
                 txtJumlahTampingActionPerformed(evt);
             }
         });
-        getContentPane().add(txtJumlahTamping, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 170, 150, 30));
+        getContentPane().add(txtJumlahTamping, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 170, 150, 30));
 
         txtKeperluan.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         txtKeperluan.setBorder(null);
@@ -291,11 +339,20 @@ public class InputData extends javax.swing.JFrame {
                 txtKeperluanActionPerformed(evt);
             }
         });
-        getContentPane().add(txtKeperluan, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 170, 150, 30));
+        getContentPane().add(txtKeperluan, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 210, 150, 30));
 
         cmbNama.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Pilih Nama--" }));
         cmbNama.setToolTipText("Pilih Nama");
         getContentPane().add(cmbNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 170, 180, 30));
+
+        btnMulai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/BtnMulai.png"))); // NOI18N
+        btnMulai.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnMulai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnMulaiMouseClicked(evt);
+            }
+        });
+        getContentPane().add(btnMulai, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 230, -1, -1));
 
         btnDataTamping.setBackground(new java.awt.Color(255, 255, 255));
         btnDataTamping.setText("Data Tamping");
@@ -312,6 +369,39 @@ public class InputData extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnDataTamping, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 50, 140, 40));
+
+        btnStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/BtnBerhenti.png"))); // NOI18N
+        btnStop.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnStop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnStopMouseClicked(evt);
+            }
+        });
+        getContentPane().add(btnStop, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 230, -1, -1));
+
+        tblTmpData.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblTmpData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTmpDataMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblTmpData);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, 750, 350));
+
+        btnSaveData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/BtnSave.png"))); // NOI18N
+        btnSaveData.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        getContentPane().add(btnSaveData, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 230, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/InputTamping.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 720));
@@ -332,99 +422,13 @@ public class InputData extends javax.swing.JFrame {
         ht.setVisible(true);
     }//GEN-LAST:event_btnHistoryMouseClicked
 
-    private void btnStartGoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStartGoMouseClicked
-        startGo = true;
-        PreviewTimer pt = new PreviewTimer();
-//        pt.setVisible(true);
-        pt.t.setText("500000");
-        
-        Thread t = new Thread() {
-            public void run(){
-                for(;;) {
-                    if (startGo == true) {
-                        try {
-                            sleep(1);
-
-                            if (mili >1000) {
-                                mili = 0;
-                                detik++;
-                            } else if (detik > 60) {
-                                detik = 0;
-                                menit++;
-                            } else if (menit > 60) {
-                                menit = 0;
-                                jam++;
-                            }
-                            
-                            mili++;
-                            String tmpMenit = (menit==0) ? "00" : Integer.toString(menit);
-                            String tmpJam = (jam==0) ? "00" : Integer.toString(jam);
-                            txtTimerGo.setText(tmpJam +":"+tmpMenit +":"+detik);
-                            valueGo = txtTimerGo.getText();
-                        } catch (Exception e) {
-                        }
-                    } else {
-                        break;
-                    }
-                }
-            }
-        };
-        t.start();
-    }//GEN-LAST:event_btnStartGoMouseClicked
-
-    private void btnStopGoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStopGoMouseClicked
-        startGo = false;
-    }//GEN-LAST:event_btnStopGoMouseClicked
-
-    private void btnStartBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStartBackMouseClicked
-        startBack = true;
-        
-        
-        Thread t = new Thread() {
-            public void run(){
-                for(;;) {
-                    if (startBack == true) {
-                        try {
-                            sleep(1);
-
-                            if (miliBck >1000) {
-                                miliBck = 0;
-                                detikBck++;
-                            } else if (detikBck > 60) {
-                                detikBck = 0;
-                                menitBck++;
-                            } else if (menitBck > 60) {
-                                menitBck = 0;
-                                jamBck++;
-                            }
-                            
-                            miliBck++;
-                            String tmpMenit = (menitBck==0) ? "00" : Integer.toString(menitBck);
-                            String tmpJam = (jamBck==0) ? "00" : Integer.toString(jamBck);
-                            txtTimerBack.setText(tmpJam +":"+tmpMenit +":"+detikBck);
-                            valueBack = txtTimerBack.getText();
-                        } catch (Exception e) {
-                        }
-                    } else {
-                        break;
-                    }
-                }
-            }
-        };
-        t.start();
-    }//GEN-LAST:event_btnStartBackMouseClicked
-
-    private void btnStopBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStopBackMouseClicked
-        startBack = false;
-    }//GEN-LAST:event_btnStopBackMouseClicked
-
     private void txtJumlahTampingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtJumlahTampingActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtJumlahTampingActionPerformed
 
     private void cmbTampingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTampingActionPerformed
-//        System.out.println(idTamping[cmbTamping.getSelectedIndex()]);
-tampilCmbPetugas(idTamping.get(cmbTamping.getSelectedIndex()));
+
+        tampilCmbPetugas(idTamping.get(cmbTamping.getSelectedIndex()));
     }//GEN-LAST:event_cmbTampingActionPerformed
 
     private void txtKeperluanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKeperluanActionPerformed
@@ -443,6 +447,46 @@ tampilCmbPetugas(idTamping.get(cmbTamping.getSelectedIndex()));
          InputTamping it = new InputTamping();
         it.setVisible(true);
     }//GEN-LAST:event_btnDataTampingMouseClicked
+
+    private void btnMulaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMulaiMouseClicked
+        if (idTmp == -1) {
+            addNewRow();
+        } else {
+            updateTable(idTmp);
+        }
+    }//GEN-LAST:event_btnMulaiMouseClicked
+
+    private void tblTmpDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTmpDataMouseClicked
+        int row = tblTmpData.getSelectedRow();
+        
+        data = new Object[] {
+            tblTmpData.getModel().getValueAt(row, 0).toString(),
+            tblTmpData.getModel().getValueAt(row, 1).toString(),
+            tblTmpData.getModel().getValueAt(row, 2).toString(),
+            tblTmpData.getModel().getValueAt(row, 3).toString(),
+            tblTmpData.getModel().getValueAt(row, 4).toString(),
+            tblTmpData.getModel().getValueAt(row, 5).toString(),
+            tblTmpData.getModel().getValueAt(row, 6).toString(),
+            tblTmpData.getModel().getValueAt(row, 7).toString(),
+            tblTmpData.getModel().getValueAt(row, 8).toString(),
+            tblTmpData.getModel().getValueAt(row, 9).toString(),
+            tblTmpData.getModel().getValueAt(row, 10).toString(),
+            tblTmpData.getModel().getValueAt(row, 11).toString(),
+        };
+        int indexTamping = Integer.parseInt(tblTmpData.getModel().getValueAt(row, 1).toString());
+        int indexnama = Integer.parseInt(tblTmpData.getModel().getValueAt(row, 2).toString());
+        cmbTamping.setSelectedIndex(idTamping.indexOf(indexTamping));
+        cmbNama.setSelectedIndex(idPetugas.indexOf(indexnama));
+        txtJumlahTamping.setText(tblTmpData.getModel().getValueAt(row, 3).toString());
+        txtKeperluan.setText(tblTmpData.getModel().getValueAt(row, 7).toString());
+        idTmp = row;
+
+    }//GEN-LAST:event_tblTmpDataMouseClicked
+
+    private void btnStopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStopMouseClicked
+        System.out.println(idTmp);
+        updateTable(idTmp);
+    }//GEN-LAST:event_btnStopMouseClicked
     
     private void inputTamping(){
         try {
@@ -487,8 +531,11 @@ tampilCmbPetugas(idTamping.get(cmbTamping.getSelectedIndex()));
     private void resetForm(){
         txtJumlahTamping.setText("");
         txtKeperluan.setText("");
-        txtTimerGo.setText("00:00:00");
-        txtTimerBack.setText("00:00:00");
+        cmbTamping.setSelectedIndex(0);
+        cmbNama.setSelectedIndex(0);
+        idTmp = -1;
+//        txtTimerGo.setText("00:00:00");
+//        txtTimerBack.setText("00:00:00");
         detik = 0;
         menit = 0;
         jam = 0; 
@@ -537,17 +584,16 @@ tampilCmbPetugas(idTamping.get(cmbTamping.getSelectedIndex()));
     private javax.swing.JButton btnDataTamping;
     private javax.swing.JPanel btnHistory;
     private javax.swing.JPanel btnHome;
+    private javax.swing.JButton btnMulai;
     private javax.swing.JPanel btnSave;
-    private javax.swing.JPanel btnStartBack;
-    private javax.swing.JPanel btnStartGo;
-    private javax.swing.JPanel btnStopBack;
-    private javax.swing.JPanel btnStopGo;
+    private javax.swing.JButton btnSaveData;
+    private javax.swing.JButton btnStop;
     private javax.swing.JComboBox<String> cmbNama;
     private javax.swing.JComboBox<String> cmbTamping;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblTmpData;
     private javax.swing.JTextField txtJumlahTamping;
     private javax.swing.JTextField txtKeperluan;
-    private javax.swing.JLabel txtTimerBack;
-    private javax.swing.JLabel txtTimerGo;
     // End of variables declaration//GEN-END:variables
 }

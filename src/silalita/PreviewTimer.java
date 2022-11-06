@@ -44,7 +44,6 @@ public class PreviewTimer extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(960, 700));
         setMinimumSize(new java.awt.Dimension(960, 700));
-        setPreferredSize(new java.awt.Dimension(960, 700));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtNamaTamping.setText("-");

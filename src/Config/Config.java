@@ -21,7 +21,8 @@ public class Config {
        //untuk koneksi ke database
        try{
            Class.forName("org.sqlite.JDBC");
-           String url="jdbc:sqlite:C:/Program Files/Silalita/silalita.db";
+           String url="jdbc:sqlite:silalita.db";
+//           String url="jdbc:sqlite:C:/Program Files/Silalita/silalita.db";
            koneksi=DriverManager.getConnection(url);
        }catch(SQLException se){
            System.out.println("Gagal koneksi data"+se);

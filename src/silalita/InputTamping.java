@@ -103,7 +103,7 @@ public class InputTamping extends javax.swing.JFrame {
             tblTamping.setBorder(border);
         } catch (Exception e) {
 //            System.out.println(e);
-    }
+        }
         tblTamping.getColumnModel().getColumn(0).setMinWidth(0);
         tblTamping.getColumnModel().getColumn(0).setMaxWidth(0);
         tblTamping.getColumnModel().getColumn(0).setWidth(0);
